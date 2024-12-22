@@ -3,8 +3,11 @@ package com.example.moviesearchapp.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.example.moviesearchapp.ui.navigation.Screen
 
 @Composable
 fun MovieApp(){
@@ -13,11 +16,22 @@ fun MovieApp(){
 
     NavHost(
         navController = navController,
+        startDestination = Screen.ExploreScreen
 
-    ) { }
+    ) {
+            composable<Screen.ExploreScreen> {
+                ExploreScreen(
+                    onNavigateToDetails = { movieId ->
+                        navController.navigate(Screen.Details(movieId))
+                    }
+                )
+            }
+        composable<Screen.Details> {backStackEntry ->
+            val movie:Screen.Details = backStackEntry.toRoute()
+        }
+    }
 
 
 }
 
 
-sealed class

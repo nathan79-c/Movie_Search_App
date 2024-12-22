@@ -2,6 +2,7 @@ package com.example.moviesearchapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -35,16 +37,14 @@ import androidx.compose.ui.unit.dp
 import com.example.moviesearchapp.R
 
 @Composable
-fun ExploreScreen() {
+fun ExploreScreen(onNavigateToDetails: (Int) -> Unit) { // Ajouter une fonction de navigation
     Scaffold { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background) // Background from theme
+                .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
         ) {
-
-
             // Banner
             Banner()
 
@@ -59,18 +59,17 @@ fun ExploreScreen() {
             Text(
                 text = "Explore",
                 style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onBackground, // Text color from theme
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             // Movie Collections Grid
-            MovieCollectionGrid()
+            MovieCollectionGrid(onNavigateToDetails)
         }
     }
 }
-
 @Composable
 fun Banner() {
     Box(
@@ -125,9 +124,8 @@ fun SearchBar() {
     )
 }
 
-
 @Composable
-fun MovieCollectionGrid() {
+fun MovieCollectionGrid(onNavigateToDetails: (Int) -> Unit) { // Passer la fonction de navigation
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
@@ -143,19 +141,24 @@ fun MovieCollectionGrid() {
                 4 -> Pair("Frozen", R.drawable.movie_poster)
                 else -> Pair("Unknown Collection", R.drawable.movie_poster)
             }
-            MovieCollectionCard(title = movieData.first, imageRes = movieData.second)
+            MovieCollectionCard(
+                title = movieData.first,
+                imageRes = movieData.second,
+                onClick = { onNavigateToDetails(index) } // Appeler la fonction de navigation
+            )
         }
     }
 }
 
 @Composable
-fun MovieCollectionCard(title: String, imageRes: Int) {
+fun MovieCollectionCard(title: String, imageRes: Int, onClick: () -> Unit) { // Ajouter un onClick
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f)
-            .clip(MaterialTheme.shapes.medium) // Shape from theme
+            .clip(MaterialTheme.shapes.medium)
             .background(MaterialTheme.colorScheme.surface)
+            .clickable { onClick() } // Ajouter la fonction clic
     ) {
         Image(
             painter = painterResource(id = imageRes),
@@ -191,6 +194,6 @@ fun MovieCollectionCard(title: String, imageRes: Int) {
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview(){
-    ExploreScreen()
+    ExploreScreen(onNavigateToDetails = {})
 }
 

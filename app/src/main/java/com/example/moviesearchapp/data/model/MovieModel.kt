@@ -19,3 +19,5 @@ data class MovieModel(
     val posterUrl: String? = null // URL de l'affiche du film
 )
 
+
+

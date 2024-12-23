@@ -1,7 +1,9 @@
 package com.example.moviesearchapp.data.model
 
+import com.example.moviesearchapp.data.network.MovieResponse
 
-    data class MovieModel(
+
+data class MovieModel(
         val id: Int = 0, // Identifiant unique pour chaque film
         val title: String, // Titre du film
         val year: Int? = null, // Année de sortie
@@ -18,6 +20,26 @@ package com.example.moviesearchapp.data.model
         val awards: String? = null, // Récompenses et nominations
         val posterUrl: Int? = null // URL de l'affiche du film
     )
+
+fun MovieResponse.toMovieModel(): MovieModel {
+    return MovieModel(
+        title = Title ?: "Titre inconnu",
+        year = Year?.toIntOrNull(),
+        rating = Rated,
+        releaseDate = Released,
+        duration = Runtime,
+        genre = Genre?.split(", ") ?: emptyList(),
+        director = Director,
+        writers = Writer?.split(", ") ?: emptyList(),
+        cast = Actors?.split(", ") ?: emptyList(),
+        synopsis = Plot,
+        languages = Language?.split(", ") ?: emptyList(),
+        countries = Country?.split(", ") ?: emptyList(),
+        awards = Awards,
+        posterUrl = Poster
+    )
+}
+
 
 
 

@@ -1,5 +1,6 @@
 package com.example.moviesearchapp.data.local
 
+import com.example.moviesearchapp.R
 import com.example.moviesearchapp.data.model.MovieModel
 
 val movieList = listOf(
@@ -18,7 +19,7 @@ val movieList = listOf(
         languages = listOf("English"),
         countries = listOf("USA", "UK"),
         awards = "Won 2 Oscars. 157 wins & 163 nominations total.",
-        posterUrl = "https://example.com/dark_knight_poster.jpg"
+        posterUrl = R.drawable.movie_poster
     ),
     MovieModel(
         id = 2,
@@ -35,7 +36,7 @@ val movieList = listOf(
         languages = listOf("English", "Japanese", "French"),
         countries = listOf("USA", "UK"),
         awards = "Won 4 Oscars. 157 wins & 220 nominations total.",
-        posterUrl = "https://example.com/inception_poster.jpg"
+        posterUrl = R.drawable.movie_poster
     ),
     MovieModel(
         id = 3,
@@ -52,7 +53,7 @@ val movieList = listOf(
         languages = listOf("English"),
         countries = listOf("USA", "UK", "Canada"),
         awards = "Won 1 Oscar. 44 wins & 148 nominations total.",
-        posterUrl = "https://example.com/interstellar_poster.jpg"
+        posterUrl = R.drawable.movie_poster
     ),
     MovieModel(
         id = 4,
@@ -69,7 +70,7 @@ val movieList = listOf(
         languages = listOf("Korean", "English"),
         countries = listOf("South Korea"),
         awards = "Won 4 Oscars. 307 wins & 270 nominations total.",
-        posterUrl = "https://example.com/parasite_poster.jpg"
+        posterUrl = R.drawable.movie_poster
     ),
     MovieModel(
         id = 5,
@@ -86,7 +87,7 @@ val movieList = listOf(
         languages = listOf("English", "Spanish", "French"),
         countries = listOf("USA"),
         awards = "Won 1 Oscar. 70 wins & 75 nominations total.",
-        posterUrl = "https://example.com/pulp_fiction_poster.jpg"
+        posterUrl = R.drawable.movie_poster
     ),
     MovieModel(
         id = 6,
@@ -103,7 +104,7 @@ val movieList = listOf(
         languages = listOf("English"),
         countries = listOf("USA", "Australia"),
         awards = "Won 4 Oscars. 42 wins & 51 nominations total.",
-        posterUrl = "https://example.com/matrix_poster.jpg"
+        posterUrl =R.drawable.movie_poster
     ),
     MovieModel(
         id = 7,
@@ -120,7 +121,7 @@ val movieList = listOf(
         languages = listOf("English"),
         countries = listOf("USA"),
         awards = "Nominated for 7 Oscars. 21 wins & 43 nominations total.",
-        posterUrl = "https://example.com/shawshank_poster.jpg"
+        posterUrl = R.drawable.movie_poster
     ),
     MovieModel(
         id = 8,
@@ -137,7 +138,7 @@ val movieList = listOf(
         languages = listOf("English"),
         countries = listOf("USA", "Germany"),
         awards = "Nominated for 1 Oscar. 11 wins & 38 nominations total.",
-        posterUrl = "https://example.com/fight_club_poster.jpg"
+        posterUrl = R.drawable.movie_poster
     ),
     MovieModel(
         id = 9,
@@ -154,7 +155,7 @@ val movieList = listOf(
         languages = listOf("English"),
         countries = listOf("USA"),
         awards = "Won 6 Oscars. 50 wins & 75 nominations total.",
-        posterUrl = "https://example.com/forrest_gump_poster.jpg"
+        posterUrl = R.drawable.movie_poster
     ),
     MovieModel(
         id = 10,
@@ -171,6 +172,6 @@ val movieList = listOf(
         languages = listOf("English", "Italian"),
         countries = listOf("USA"),
         awards = "Won 3 Oscars. 31 wins & 30 nominations total.",
-        posterUrl = "https://example.com/godfather_poster.jpg"
+        posterUrl = R.drawable.movie_poster
     )
 )

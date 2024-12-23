@@ -130,6 +130,11 @@ dependencies {
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation(libs.androidx.room.ktx)
+
+    // chargement d'image
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil3.coil.network.okhttp)
 }
 // Allow references to generated code
 kapt {

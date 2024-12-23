@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.moviesearchapp.data.local.movieList
 import com.example.moviesearchapp.ui.navigation.Screen
 
 @Composable
@@ -21,6 +22,7 @@ fun MovieApp(){
     ) {
             composable<Screen.ExploreScreen> {
                 ExploreScreen(
+                    listMovies = movieList,
                     onNavigateToDetails = { movieId ->
                         navController.navigate(Screen.Details(movieId))
                     }
@@ -28,6 +30,10 @@ fun MovieApp(){
             }
         composable<Screen.Details> {backStackEntry ->
             val movie:Screen.Details = backStackEntry.toRoute()
+            MovieDetailsScreen(
+                navController = navController,
+                movieId = movie.movieId
+            )
         }
     }
 

@@ -34,10 +34,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.example.moviesearchapp.R
+import com.example.moviesearchapp.data.local.movieList
+import com.example.moviesearchapp.data.model.MovieModel
 
 @Composable
-fun ExploreScreen(onNavigateToDetails: (Int) -> Unit) { // Ajouter une fonction de navigation
+fun ExploreScreen(
+    onNavigateToDetails: (Int) -> Unit,
+    listMovies: List<MovieModel>
+) { // Ajouter une fonction de navigation
     Scaffold { innerPadding ->
         Column(
             modifier = Modifier
@@ -66,7 +72,10 @@ fun ExploreScreen(onNavigateToDetails: (Int) -> Unit) { // Ajouter une fonction 
             Spacer(modifier = Modifier.height(24.dp))
 
             // Movie Collections Grid
-            MovieCollectionGrid(onNavigateToDetails)
+            MovieCollectionGrid(
+                listMovies = listMovies,
+                onNavigateToDetails = onNavigateToDetails
+            )
         }
     }
 }
@@ -125,47 +134,57 @@ fun SearchBar() {
 }
 
 @Composable
-fun MovieCollectionGrid(onNavigateToDetails: (Int) -> Unit) { // Passer la fonction de navigation
+fun MovieCollectionGrid(
+    listMovies: List<MovieModel>,
+    onNavigateToDetails: (Int) -> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(6) { index ->
-            val movieData = when (index) {
-                0 -> Pair("Mickey Mouse & Friends", R.drawable.movie_poster)
-                1 -> Pair("Black Widow", R.drawable.t_l_chargement__2_)
-                2 -> Pair("Beasts and Monsters", R.drawable.movie_poster)
-                3 -> Pair("Loki", R.drawable.uncharted__drake_s_fortune__2007_)
-                4 -> Pair("Frozen", R.drawable.movie_poster)
-                else -> Pair("Unknown Collection", R.drawable.movie_poster)
-            }
+        items(listMovies.size) { index ->
+            val movie = listMovies[index]
             MovieCollectionCard(
-                title = movieData.first,
-                imageRes = movieData.second,
-                onClick = { onNavigateToDetails(index) } // Appeler la fonction de navigation
+                movie = movie,
+                onClick = { onNavigateToDetails(movie.id) }
             )
         }
     }
 }
 
 @Composable
-fun MovieCollectionCard(title: String, imageRes: Int, onClick: () -> Unit) { // Ajouter un onClick
+fun MovieCollectionCard(
+    movie: MovieModel,
+    onClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f)
             .clip(MaterialTheme.shapes.medium)
             .background(MaterialTheme.colorScheme.surface)
-            .clickable { onClick() } // Ajouter la fonction clic
+            .clickable { onClick() }
     ) {
-        Image(
-            painter = painterResource(id = imageRes),
-            contentDescription = title,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
+       /* if (!movie.posterUrl.isNullOrEmpty()) {
+            AsyncImage(
+                model = movie.posterUrl,
+                contentDescription = movie.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+
+        */
+        movie.posterUrl?.let { painterResource(it) }?.let {
+            Image(
+                painter = it,
+                contentDescription = movie.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -180,7 +199,7 @@ fun MovieCollectionCard(title: String, imageRes: Int, onClick: () -> Unit) { // 
                 )
         )
         Text(
-            text = title,
+            text = movie.title,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier
@@ -194,6 +213,7 @@ fun MovieCollectionCard(title: String, imageRes: Int, onClick: () -> Unit) { // 
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview(){
-    ExploreScreen(onNavigateToDetails = {})
+    val listMovies =movieList
+    ExploreScreen(onNavigateToDetails = {},listMovies)
 }
 

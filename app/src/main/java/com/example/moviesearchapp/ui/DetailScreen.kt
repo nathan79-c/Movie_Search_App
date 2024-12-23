@@ -32,13 +32,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.moviesearchapp.R
+import com.example.moviesearchapp.data.local.movieList
+import com.example.moviesearchapp.data.model.MovieModel
 
 
 @Composable
 fun MovieDetailsScreen(
     navController: NavController,
-    movieId: Int
+    movieId: Int,
+    movieLists: List<MovieModel> = movieList // Liste de films passée en paramètre
 ) {
+    // Recherche du film correspondant à l'ID
+    val movie = movieLists.find { it.id == movieId } ?: MovieModel(
+        id = movieId,
+        title = "Unknown Movie",
+        year = null,
+        duration = null,
+        genre = listOf("Unknown"),
+        writers = emptyList(),
+        synopsis = "No details available for this movie.",
+        posterUrl = null
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -51,22 +66,28 @@ fun MovieDetailsScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Movie Poster
-            Image(
-                painter = painterResource(R.drawable.uncharted__drake_s_fortune__2007_),
-                contentDescription = "Movie Poster",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp))
-                    .border(4.dp, MaterialTheme.colorScheme.onBackground, RoundedCornerShape(16.dp))
-                    .shadow(10.dp, RoundedCornerShape(16.dp))
-            )
+            // Affiche du film
+            movie.posterUrl?.let { posterRes ->
+                Image(
+                    painter = painterResource(id = posterRes),
+                    contentDescription = "Movie Poster",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp))
+                        .border(
+                            4.dp,
+                            MaterialTheme.colorScheme.onBackground,
+                            RoundedCornerShape(16.dp)
+                        )
+                        .shadow(10.dp, RoundedCornerShape(16.dp))
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Movie Title
+            // Titre du film
             Text(
-                text = "The Amazing Adventure",
+                text = movie.title,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.ExtraBold,
                 color = MaterialTheme.colorScheme.onBackground,
@@ -75,9 +96,9 @@ fun MovieDetailsScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Year and Duration
+            // Année et durée
             Text(
-                text = "2024 | 2h 14min",
+                text = "${movie.year ?: "Unknown Year"} | ${movie.duration ?: "Unknown Duration"}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center
@@ -86,47 +107,51 @@ fun MovieDetailsScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             // Genre
-            Text(
-                text = "Genre: Action, Adventure",
-                style = MaterialTheme.typography.bodyMedium,
-                fontStyle = FontStyle.Italic,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+            if (movie.genre.isNotEmpty()) {
+                Text(
+                    text = "Genre: ${movie.genre.joinToString(", ")}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontStyle = FontStyle.Italic,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Writer
-            Text(
-                text = "Written by: John Doe",
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+            // Scénaristes
+            if (movie.writers.isNotEmpty()) {
+                Text(
+                    text = "Written by: ${movie.writers.joinToString(", ")}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Synopsis Title
-            Text(
-                text = "Synopsis",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+            // Synopsis
+            if (!movie.synopsis.isNullOrEmpty()) {
+                Text(
+                    text = "Synopsis",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
 
-            Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-            // Synopsis Content
-            Text(
-                text = "In a world full of chaos, a lone hero sets out on an incredible journey to save his people. "
-                        + "With breathtaking landscapes and thrilling action sequences, this movie promises a ride of a lifetime!",
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Justify,
-                color = MaterialTheme.colorScheme.secondary
-            )
+                Text(
+                    text = movie.synopsis,
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Justify,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Action Buttons
+            // Boutons d'action
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier.fillMaxWidth()
@@ -154,8 +179,9 @@ fun MovieDetailsScreen(
 }
 
 
+
 @Preview(showBackground = true)
 @Composable
 fun DetailsPreview(){
-    MovieDetailsScreen()
+   // MovieDetailsScreen()
 }

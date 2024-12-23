@@ -135,6 +135,9 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.coil3.coil.network.okhttp)
+
+    // Hilt Navigation
+    implementation(libs.androidx.hilt.navigation.compose)
 }
 // Allow references to generated code
 kapt {

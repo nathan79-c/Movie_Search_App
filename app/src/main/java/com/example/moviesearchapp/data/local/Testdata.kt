@@ -3,7 +3,7 @@ package com.example.moviesearchapp.data.local
 import com.example.moviesearchapp.R
 import com.example.moviesearchapp.data.model.MovieModel
 
-val movieList = listOf(
+ /* val movieList = listOf(
     MovieModel(
         id = 1,
         title = "The Dark Knight",
@@ -175,3 +175,6 @@ val movieList = listOf(
         posterUrl = R.drawable.movie_poster
     )
 )
+
+
+  */

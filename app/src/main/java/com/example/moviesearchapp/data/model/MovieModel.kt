@@ -1,8 +1,9 @@
 package com.example.moviesearchapp.data.model
 
 import com.example.moviesearchapp.data.network.MovieResponse
+import kotlinx.serialization.Serializable
 
-
+@Serializable
 data class MovieModel(
         val id: Int = 0, // Identifiant unique pour chaque film
         val title: String, // Titre du film

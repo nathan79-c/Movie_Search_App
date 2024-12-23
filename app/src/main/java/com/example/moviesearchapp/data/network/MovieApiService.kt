@@ -1,6 +1,6 @@
 package com.example.moviesearchapp.data.network
 
-import com.example.moviesearchapp.data.model.MovieModel
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,7 +11,7 @@ interface MovieApiService {
     suspend fun getMovieDetails(
         @Query("apikey") apiKey: String,
         @Query("t") title: String
-    ): MovieModel
+    ): Response<MovieResponse>
 }
 
 

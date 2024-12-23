@@ -3,8 +3,8 @@ package com.example.moviesearchapp.data.local.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "movies")
-data class Movie(
+@Entity(tableName = "movies_entity")
+data class MovieEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0, // Identifiant unique pour chaque film, auto-généré
 

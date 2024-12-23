@@ -1,5 +1,6 @@
 package com.example.moviesearchapp.data.model
 
+import com.example.moviesearchapp.data.local.entities.MovieEntity
 import com.example.moviesearchapp.data.network.MovieResponse
 import kotlinx.serialization.Serializable
 
@@ -19,7 +20,7 @@ data class MovieModel(
         val languages: List<String> = emptyList(), // Liste des langues
         val countries: List<String> = emptyList(), // Liste des pays d'origine
         val awards: String? = null, // Récompenses et nominations
-        val posterUrl: Int? = null // URL de l'affiche du film
+        val posterUrl: String? = null // URL de l'affiche du film
     )
 
 fun MovieResponse.toMovieModel(): MovieModel {
@@ -40,6 +41,47 @@ fun MovieResponse.toMovieModel(): MovieModel {
         posterUrl = Poster
     )
 }
+
+fun MovieResponse.toMovieEntity(): MovieEntity {
+    return MovieEntity(
+        title = Title ?: "Titre inconnu",
+        year = Year?.toIntOrNull(),
+        rating = Rated,
+        releaseDate = Released,
+        duration = Runtime,
+        genre = Genre ?: "",
+        director = Director,
+        writers = Writer ?: "",
+        cast = Actors ?: "",
+        synopsis = Plot,
+        languages = Language ?: "",
+        countries = Country ?: "",
+        awards = Awards,
+        posterUrl = Poster
+    )
+}
+
+
+fun MovieEntity.toMovieModel(): MovieModel {
+    return MovieModel(
+        id = id,
+        title = title,
+        year = year,
+        rating = rating,
+        releaseDate = releaseDate,
+        duration = duration,
+        genre = genre!!.split(", ").filter { it.isNotBlank() },
+        director = director,
+        writers = writers!!.split(", ").filter { it.isNotBlank() },
+        cast = cast!!.split(", ").filter { it.isNotBlank() },
+        synopsis = synopsis,
+        languages = languages!!.split(", ").filter { it.isNotBlank() },
+        countries = countries!!.split(", ").filter { it.isNotBlank() },
+        awards = awards,
+        posterUrl = posterUrl
+    )
+}
+
 
 
 

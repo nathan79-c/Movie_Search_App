@@ -17,21 +17,26 @@ class MovieViewModel @Inject constructor(
     private val movieRepository: MovieRepository
 ) : ViewModel() {
 
-    // État pour les détails d'un film
-    private val _movieState = MutableStateFlow<Result<MovieModel>>(Result.EnCours())
-    val movieState: StateFlow<Result<MovieModel>> = _movieState
-
     // État pour la liste de tous les films
-    private val _allMoviesState = MutableStateFlow<Result<List<MovieModel>>>(Result.EnCours())
-    val allMoviesState: StateFlow<Result<List<MovieModel>>> = _allMoviesState
+    private val _uiStateAllMovies = MutableStateFlow<MovieUiState>(MovieUiState.Loading)
+    val uiStateAllMovies: StateFlow<MovieUiState> = _uiStateAllMovies
+
+    // État pour les détails d'un film
+    private val _uiStateMovieDetails = MutableStateFlow<MovieUiState>(MovieUiState.Loading)
+    val uiStateMovieDetails: StateFlow<MovieUiState> = _uiStateMovieDetails
 
     /**
-     * Recherche un film par titre (via API ou base de données)
+     * Recherche un film par titre
      */
     fun fetchMovieDetailsByTitle(title: String) {
         viewModelScope.launch {
+            _uiStateMovieDetails.value = MovieUiState.Loading
             movieRepository.getMovieDetails(title).collect { result ->
-                _movieState.value = result
+                _uiStateMovieDetails.value = when (result) {
+                    is Result.Reussie -> MovieUiState.Success(result.data!!)
+                    is Result.Echec -> MovieUiState.Error(result.message ?: "Erreur inconnue")
+                    is Result.EnCours -> MovieUiState.Loading
+                }
             }
         }
     }
@@ -41,23 +46,42 @@ class MovieViewModel @Inject constructor(
      */
     fun fetchMovieDetailsById(movieId: Int) {
         viewModelScope.launch {
-            _movieState.value = Result.EnCours()
+            _uiStateMovieDetails.value = MovieUiState.Loading
             val result = movieRepository.getMovieById(movieId)
-            _movieState.value = result
+            _uiStateMovieDetails.value = when (result) {
+                is Result.Reussie -> MovieUiState.Success(result.data!!)
+                is Result.Echec -> MovieUiState.Error(result.message ?: "Erreur inconnue")
+                is Result.EnCours -> MovieUiState.Loading
+            }
         }
     }
 
     /**
-     * Obtenir tous les films enregistrés dans la base de données
+     * Obtenir tous les films enregistrés
      */
     fun fetchAllMovies() {
         viewModelScope.launch {
-            _allMoviesState.value = Result.EnCours()
+            _uiStateAllMovies.value = MovieUiState.Loading
             val result = movieRepository.getAllMovies()
-            _allMoviesState.value = result
+            _uiStateAllMovies.value = when (result) {
+                is Result.Reussie -> MovieUiState.Success(result.data!!)
+                is Result.Echec -> MovieUiState.Error(result.message ?: "Erreur inconnue")
+                is Result.EnCours -> MovieUiState.Loading
+            }
         }
+    }
+
+    init {
+        fetchAllMovies()
     }
 }
 
+
+
+sealed class MovieUiState {
+    object Loading : MovieUiState() // État de chargement
+    data class Success<T>(val data: T) : MovieUiState() // Succès avec données génériques
+    data class Error(val message: String) : MovieUiState() // État d'erreur
+}
 
 

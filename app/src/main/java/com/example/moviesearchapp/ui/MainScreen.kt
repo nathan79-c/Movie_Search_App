@@ -41,7 +41,7 @@ import com.example.moviesearchapp.data.model.MovieModel
 @Composable
 fun ExploreScreen(
     onNavigateToDetails: (Int) -> Unit,
-    listMovies: List<MovieModel>
+    movieUiState: MovieUiState // Utilisation de MovieUiState
 ) {
     // Gestion de l'état pour la recherche
     var searchQuery by remember { mutableStateOf("") }

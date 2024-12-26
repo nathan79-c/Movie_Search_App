@@ -1,7 +1,9 @@
 package com.example.moviesearchapp.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -21,8 +23,11 @@ fun MovieApp(){
 
     ) {
             composable<Screen.ExploreScreen> {
+                val viewModel = hiltViewModel<MovieViewModel>()
+                // Collecter l'état des films
+                val allMoviesState by viewModel.allMoviesState.collectAsState()
                 ExploreScreen(
-                    listMovies = movieList,
+                    listMovies = allMoviesState,
                     onNavigateToDetails = { movieId ->
                         navController.navigate(Screen.Details(movieId))
                     }

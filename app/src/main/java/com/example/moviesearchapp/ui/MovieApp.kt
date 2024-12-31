@@ -9,9 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.example.moviesearchapp.data.local.movieList
 import com.example.moviesearchapp.ui.navigation.Screen
-
+/*/
 @Composable
 fun MovieApp(){
     val navController = rememberNavController()
@@ -45,4 +44,4 @@ fun MovieApp(){
 
 }
 
-
+*/

@@ -32,10 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.moviesearchapp.R
-import com.example.moviesearchapp.data.local.movieList
 import com.example.moviesearchapp.data.model.MovieModel
 
-
+/*
 @Composable
 fun MovieDetailsScreen(
     navController: NavController,
@@ -184,4 +183,4 @@ fun MovieDetailsScreen(
 @Composable
 fun DetailsPreview(){
    // MovieDetailsScreen()
-}
+} */

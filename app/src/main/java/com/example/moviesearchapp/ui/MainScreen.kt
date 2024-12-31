@@ -37,7 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.moviesearchapp.data.model.MovieModel
-
+/*
 @Composable
 fun ExploreScreen(
     onNavigateToDetails: (Int) -> Unit,
@@ -242,3 +242,4 @@ fun MainScreenPreview(){
     */
 }
 
+ */

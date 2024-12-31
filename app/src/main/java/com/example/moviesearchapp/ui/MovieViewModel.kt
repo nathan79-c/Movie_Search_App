@@ -17,71 +17,55 @@ class MovieViewModel @Inject constructor(
     private val movieRepository: MovieRepository
 ) : ViewModel() {
 
-    // État pour la liste de tous les films
-    private val _uiStateAllMovies = MutableStateFlow<MovieUiState>(MovieUiState.Loading)
-    val uiStateAllMovies: StateFlow<MovieUiState> = _uiStateAllMovies
+    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
+    val uiState: StateFlow<UiState> = _uiState
 
-    // État pour les détails d'un film
-    private val _uiStateMovieDetails = MutableStateFlow<MovieUiState>(MovieUiState.Loading)
-    val uiStateMovieDetails: StateFlow<MovieUiState> = _uiStateMovieDetails
-
-    /**
-     * Recherche un film par titre
-     */
-    fun fetchMovieDetailsByTitle(title: String) {
+    // Recherche d'un film par titre
+    fun searchMovie(title: String) {
         viewModelScope.launch {
-            _uiStateMovieDetails.value = MovieUiState.Loading
+            _uiState.value = UiState.Loading
             movieRepository.getMovieDetails(title).collect { result ->
-                _uiStateMovieDetails.value = when (result) {
-                    is Result.Reussie -> MovieUiState.Success(result.data!!)
-                    is Result.Echec -> MovieUiState.Error(result.message ?: "Erreur inconnue")
-                    is Result.EnCours -> MovieUiState.Loading
+                _uiState.value = when (result) {
+                    is Result.EnCours -> UiState.Loading
+                    is Result.Reussie -> UiState.Success(listOf(result.data))
+                    is Result.Echec -> UiState.Error(result.message ?: "Erreur inconnue")
                 }
             }
         }
     }
 
-    /**
-     * Obtenir les détails d'un film grâce à son ID
-     */
-    fun fetchMovieDetailsById(movieId: Int) {
+    // Récupération de tous les films enregistrés
+    fun getAllMovies() {
         viewModelScope.launch {
-            _uiStateMovieDetails.value = MovieUiState.Loading
-            val result = movieRepository.getMovieById(movieId)
-            _uiStateMovieDetails.value = when (result) {
-                is Result.Reussie -> MovieUiState.Success(result.data!!)
-                is Result.Echec -> MovieUiState.Error(result.message ?: "Erreur inconnue")
-                is Result.EnCours -> MovieUiState.Loading
-            }
-        }
-    }
-
-    /**
-     * Obtenir tous les films enregistrés
-     */
-    fun fetchAllMovies() {
-        viewModelScope.launch {
-            _uiStateAllMovies.value = MovieUiState.Loading
+            _uiState.value = UiState.Loading
             val result = movieRepository.getAllMovies()
-            _uiStateAllMovies.value = when (result) {
-                is Result.Reussie -> MovieUiState.Success(result.data!!)
-                is Result.Echec -> MovieUiState.Error(result.message ?: "Erreur inconnue")
-                is Result.EnCours -> MovieUiState.Loading
+            _uiState.value = when (result) {
+                is Result.Reussie -> result.data?.let { UiState.Success(it) }!!
+                is Result.Echec -> UiState.Error(result.message ?: "Erreur inconnue")
+                is Result.EnCours -> TODO()
             }
         }
     }
 
-    init {
-        fetchAllMovies()
+    // Détails d'un film par ID
+    fun getMovieDetails(movieId: Int) {
+        viewModelScope.launch {
+            _uiState.value = UiState.Loading
+            val result = movieRepository.getMovieById(movieId)
+            _uiState.value = when (result) {
+                is Result.Reussie -> UiState.Detail(result.data)
+                is Result.Echec -> UiState.Error(result.message ?: "Erreur inconnue")
+                is Result.EnCours -> TODO()
+            }
+        }
     }
 }
 
-
-
-sealed class MovieUiState {
-    object Loading : MovieUiState() // État de chargement
-    data class Success<T>(val data: T) : MovieUiState() // Succès avec données génériques
-    data class Error(val message: String) : MovieUiState() // État d'erreur
+sealed class UiState {
+    object Loading : UiState()
+    data class Success(val movies: List<MovieModel?>) : UiState()
+    data class Error(val message: String) : UiState()
+    data class Detail(val movie: MovieModel?) : UiState()
 }
 
 

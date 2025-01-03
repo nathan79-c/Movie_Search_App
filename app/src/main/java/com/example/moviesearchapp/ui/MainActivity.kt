@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    MovieScreen()
+    MovieApp()
 }
 
 @Preview(showBackground = true)

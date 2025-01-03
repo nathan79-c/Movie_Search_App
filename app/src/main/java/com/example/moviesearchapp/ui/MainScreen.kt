@@ -1,5 +1,6 @@
 package com.example.moviesearchapp.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,12 +35,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import com.example.moviesearchapp.data.model.MovieModel
 
 @Composable
-fun MovieScreen(viewModel: MovieViewModel = hiltViewModel()) {
+fun MovieScreen(
+    viewModel: MovieViewModel,
+    onDetailsClick: (Int) -> Unit = {},
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     var searchQuery by remember { mutableStateOf("") }
@@ -81,7 +84,7 @@ fun MovieScreen(viewModel: MovieViewModel = hiltViewModel()) {
                 if (movies.isNotEmpty()) {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
                         items(movies) { movie ->
-                            MovieItem(movie = movie)
+                            MovieItem(movie = movie, onClick = { movie?.id?.let { onDetailsClick(it) } })
                         }
                     }
                 } else {
@@ -106,7 +109,7 @@ fun MovieScreen(viewModel: MovieViewModel = hiltViewModel()) {
             is UiState.Detail -> {
                 val movie = (uiState as UiState.Detail).movie
                 if (movie != null) {
-                    MovieDetail(movie = movie)
+                    MovieDetails(movie = movie)
                 } else {
                     Text(
                         text = "Film introuvable",
@@ -121,10 +124,11 @@ fun MovieScreen(viewModel: MovieViewModel = hiltViewModel()) {
 }
 
 @Composable
-fun MovieItem(movie: MovieModel?) {
+fun MovieItem(movie: MovieModel?,onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick() }
             .padding(vertical = 8.dp),
        // elevation = 4.dp
     ) {
@@ -166,7 +170,7 @@ fun MovieItem(movie: MovieModel?) {
 }
 
 @Composable
-fun MovieDetail(movie: MovieModel) {
+fun MovieDetails(movie: MovieModel) {
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         // Affiche de film
         movie.posterUrl?.let { posterUrl ->

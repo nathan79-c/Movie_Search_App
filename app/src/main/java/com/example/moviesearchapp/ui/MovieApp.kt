@@ -4,17 +4,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.moviesearchapp.ui.navigation.Screen
-/*/
+
+
+
 @Composable
 fun MovieApp(){
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val viewModel = hiltViewModel<MovieViewModel>()
 
     NavHost(
         navController = navController,
@@ -22,12 +26,10 @@ fun MovieApp(){
 
     ) {
             composable<Screen.ExploreScreen> {
-                val viewModel = hiltViewModel<MovieViewModel>()
-                // Collecter l'état des films
-                val allMoviesState by viewModel.allMoviesState.collectAsState()
-                ExploreScreen(
-                    listMovies = allMoviesState,
-                    onNavigateToDetails = { movieId ->
+
+                MovieScreen(
+                   viewModel = viewModel,
+                    onDetailsClick ={ movieId ->
                         navController.navigate(Screen.Details(movieId))
                     }
                 )
@@ -36,12 +38,11 @@ fun MovieApp(){
             val movie:Screen.Details = backStackEntry.toRoute()
             MovieDetailsScreen(
                 navController = navController,
-                movieId = movie.movieId
+                movieId = movie.movieId,
+                viewModel = viewModel
             )
         }
     }
 
-
 }
 
-*/

@@ -55,7 +55,7 @@ class MovieViewModel @Inject constructor(
             _uiState.value = when (result) {
                 is Result.Reussie -> UiState.Detail(result.data)
                 is Result.Echec -> UiState.Error(result.message ?: "Erreur inconnue")
-                is Result.EnCours -> TODO()
+                is Result.EnCours ->  UiState.Loading
             }
         }
     }

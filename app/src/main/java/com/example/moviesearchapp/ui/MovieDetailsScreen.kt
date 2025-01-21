@@ -123,7 +123,7 @@ fun MovieDetail(movie: MovieModel) {
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
-                text = "Genre : ${movie.genre.joinToString(", ") ?: "Inconnu"}",
+                text = "Genre : ${movie.genre.joinToString(", ")}",
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(

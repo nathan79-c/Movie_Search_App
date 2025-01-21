@@ -14,7 +14,6 @@ import com.example.moviesearchapp.ui.navigation.Screen
 @Composable
 fun MovieApp(){
     val navController = rememberNavController()
-    val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val viewModel = hiltViewModel<MovieViewModel>()
 
     NavHost(

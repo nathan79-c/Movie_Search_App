@@ -138,6 +138,8 @@ dependencies {
 
     // Hilt Navigation
     implementation(libs.androidx.hilt.navigation.compose)
+
+
 }
 // Allow references to generated code
 kapt {

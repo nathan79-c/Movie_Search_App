@@ -109,7 +109,7 @@ fun MovieScreen(
             is UiState.Detail -> {
                 val movie = (uiState as UiState.Detail).movie
                 if (movie != null) {
-                    MovieDetails(movie = movie)
+                    MovieDetail(movie = movie)
                 } else {
                     Text(
                         text = "Film introuvable",
@@ -169,33 +169,4 @@ fun MovieItem(movie: MovieModel?,onClick: () -> Unit) {
     }
 }
 
-@Composable
-fun MovieDetails(movie: MovieModel) {
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        // Affiche de film
-        movie.posterUrl?.let { posterUrl ->
-            AsyncImage(
-                model = posterUrl,
-                contentDescription = "Affiche du film",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp)
-                    .clip(RoundedCornerShape(8.dp))
-            )
-        }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Détails complets du film
-        Text(text = "Titre : ${movie.title}", style = MaterialTheme.typography.bodySmall)
-        Text(text = "Année : ${movie.year ?: "Inconnue"}", style = MaterialTheme.typography.bodySmall)
-        Text(text = "Durée : ${movie.duration ?: "Inconnue"}", style = MaterialTheme.typography.bodySmall)
-        Text(text = "Synopsis : ${movie.synopsis ?: "Non disponible"}", style = MaterialTheme.typography.bodySmall)
-        Text(text = "Genres : ${movie.genre.joinToString(", ")}", style = MaterialTheme.typography.bodySmall)
-        Text(text = "Réalisateur : ${movie.director ?: "Inconnu"}", style = MaterialTheme.typography.bodySmall)
-        Text(text = "Acteurs principaux : ${movie.cast.joinToString(", ")}", style = MaterialTheme.typography.bodySmall)
-        Text(text = "Langues : ${movie.languages.joinToString(", ")}", style = MaterialTheme.typography.bodySmall)
-        Text(text = "Pays : ${movie.countries.joinToString(", ")}", style = MaterialTheme.typography.bodySmall)
-        Text(text = "Récompenses : ${movie.awards ?: "Aucune"}", style = MaterialTheme.typography.bodySmall)
-    }
-}

@@ -62,7 +62,7 @@ class MovieViewModel @Inject constructor(
 }
 
 sealed class UiState {
-    object Loading : UiState()
+    data object Loading : UiState()
     data class Success(val movies: List<MovieModel?>) : UiState()
     data class Error(val message: String) : UiState()
     data class Detail(val movie: MovieModel?) : UiState()

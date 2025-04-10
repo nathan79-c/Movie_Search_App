@@ -1,11 +1,10 @@
 package com.example.moviesearchapp.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.moviesearchapp.ui.navigation.Screen

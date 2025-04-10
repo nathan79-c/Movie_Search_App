@@ -9,3 +9,4 @@ import com.example.moviesearchapp.data.local.entities.MovieEntity
 abstract class MovieDatabase: RoomDatabase() {
     abstract fun movieDao(): MovieDao
 }
+
